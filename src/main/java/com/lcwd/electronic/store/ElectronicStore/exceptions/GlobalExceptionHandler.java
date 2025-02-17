@@ -1,6 +1,6 @@
 package com.lcwd.electronic.store.ElectronicStore.exceptions;
 
-import com.lcwd.electronic.store.ElectronicStore.dtos.ApiResponseMessage;
+import com.lcwd.electronic.store.ElectronicStore.dtos.common.ApiResponseMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

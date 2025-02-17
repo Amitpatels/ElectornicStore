@@ -1,8 +1,10 @@
 package com.lcwd.electronic.store.ElectronicStore.services.impl;
 
 import com.lcwd.electronic.store.ElectronicStore.dtos.UserDto;
+import com.lcwd.electronic.store.ElectronicStore.dtos.common.PageableResponse;
 import com.lcwd.electronic.store.ElectronicStore.entities.User;
 import com.lcwd.electronic.store.ElectronicStore.exceptions.ResourceNotFoundException;
+import com.lcwd.electronic.store.ElectronicStore.helper.PageableResponseUtility;
 import com.lcwd.electronic.store.ElectronicStore.repositories.UserRepository;
 import com.lcwd.electronic.store.ElectronicStore.services.UserService;
 import org.modelmapper.ModelMapper;
@@ -64,7 +66,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getAllUser(int pageNumber, int pageSize, String sortBy, String sortDir) {
+    public PageableResponse<UserDto> getAllUser(int pageNumber, int pageSize, String sortBy, String sortDir) {
 
         Sort sort = sortDir.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
 
@@ -74,7 +76,12 @@ public class UserServiceImpl implements UserService {
 
         List<User> users = page.getContent();
 
-        return users.stream().map(user -> entityToDto(user)).collect(Collectors.toList());
+        List<UserDto> userDtoList = users.stream().map(user -> entityToDto(user)).collect(Collectors.toList());
+
+        PageableResponse<UserDto> pageableResponse = PageableResponseUtility.getPageableResponse(page, UserDto.class);
+
+        return pageableResponse;
+
     }
 
     @Override
