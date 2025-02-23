@@ -3,6 +3,9 @@ package com.lcwd.electronic.store.ElectronicStore.helper;
 import com.lcwd.electronic.store.ElectronicStore.dtos.common.PageableResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,5 +25,10 @@ public class PageableResponseUtility {
         response.setLastPage(page.isLast());
 
         return response;
+    }
+
+    public static Pageable getPageableSortObject(int pageNumber, int pageSize, String sortBy, String sortDir){
+        Sort sort = sortDir.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+        return PageRequest.of(pageNumber,pageSize,sort);
     }
 }

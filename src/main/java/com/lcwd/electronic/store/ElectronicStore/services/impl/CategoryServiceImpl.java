@@ -8,13 +8,21 @@ import com.lcwd.electronic.store.ElectronicStore.helper.PageableResponseUtility;
 import com.lcwd.electronic.store.ElectronicStore.repositories.CategoryRepository;
 import com.lcwd.electronic.store.ElectronicStore.services.CategoryService;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -27,6 +35,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private ModelMapper mapper;
+
+    @Value("${category.cover.image.path}")
+    private String imageUploadPath;
+
+    Logger logger = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
     @Override
     public CategoryDto create(CategoryDto categoryDto) {
@@ -53,6 +66,19 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void delete(String categoryId) {
         Category category = categoryRepository.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("Category not found exception !!"));
+
+        //delete product image first
+        String imageFullPath = imageUploadPath + category.getCoverImage();
+        try{
+            Path path = Paths.get(imageFullPath);
+            Files.delete(path);
+        } catch (NoSuchFileException ex) {
+            logger.info("Product image was not found in path : {}",imageFullPath);
+            ex.printStackTrace();
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+
         categoryRepository.delete(category);
     }
 
