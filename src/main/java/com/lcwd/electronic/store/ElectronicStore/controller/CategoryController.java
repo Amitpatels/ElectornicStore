@@ -1,11 +1,13 @@
 package com.lcwd.electronic.store.ElectronicStore.controller;
 
+import com.lcwd.electronic.store.ElectronicStore.dtos.ProductDto;
 import com.lcwd.electronic.store.ElectronicStore.dtos.common.ApiResponseMessage;
 import com.lcwd.electronic.store.ElectronicStore.dtos.CategoryDto;
 import com.lcwd.electronic.store.ElectronicStore.dtos.common.ImageResponse;
 import com.lcwd.electronic.store.ElectronicStore.dtos.common.PageableResponse;
 import com.lcwd.electronic.store.ElectronicStore.services.CategoryService;
 import com.lcwd.electronic.store.ElectronicStore.services.FileService;
+import com.lcwd.electronic.store.ElectronicStore.services.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,9 @@ public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private ProductService productService;
 
     @Autowired
     private FileService fileService;
@@ -103,5 +108,36 @@ public class CategoryController {
         InputStream resource = fileService.getResource(imageUploadPath,categoryDto.getCoverImage());
         response.setContentType(MediaType.ALL_VALUE);
         StreamUtils.copy(resource,response.getOutputStream());
+    }
+
+    @PostMapping("/{categoryId}/products")
+    public ResponseEntity<ProductDto> createProductWithCategory(
+        @PathVariable("categoryId") String categoryId,
+        @RequestBody ProductDto productDto
+        )
+    {
+        ProductDto productWithCategory = productService.createProductWithCategoryId(productDto,categoryId);
+        return new ResponseEntity<>(productWithCategory,HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{categoryId}/products/{productId}")
+    public ResponseEntity<ProductDto> updateCategoryOfProduct(
+            @PathVariable String categoryId,
+            @PathVariable String productId
+    ){
+        ProductDto productDto = productService.updateCategoryIdWithProductId(categoryId,productId);
+        return new ResponseEntity<>(productDto,HttpStatus.OK);
+    }
+
+    @GetMapping("/{categoryId}/products")
+    public ResponseEntity<PageableResponse<ProductDto>> getProductOfCategory(
+            @PathVariable String categoryId,
+            @RequestParam(value="pageNumber", defaultValue = "0", required = false) int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = "title", required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir
+    ){
+        PageableResponse<ProductDto> response =  productService.getAllCategory(categoryId,pageNumber,pageSize,sortBy,sortDir);
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 }

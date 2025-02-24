@@ -2,7 +2,6 @@ package com.lcwd.electronic.store.ElectronicStore.dtos;
 
 import lombok.*;
 
-import javax.persistence.Id;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -21,4 +20,5 @@ public class ProductDto {
     private boolean live;
     private boolean stock;
     private String productImageName;
+    private CategoryDto category;
 }
