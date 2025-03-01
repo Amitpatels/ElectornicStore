@@ -49,7 +49,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         Category category = dtoToEntity(categoryDto);
         Category savedCategory = categoryRepository.save(category);
-        return entityToDto(category);
+        return entityToDto(savedCategory);
     }
 
     @Override
