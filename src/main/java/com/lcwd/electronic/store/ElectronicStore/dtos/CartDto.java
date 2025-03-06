@@ -13,9 +13,8 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class CartDto {
-
     private String cartId;
-    private Date createdDate;
+    private Date createdAt;
     private UserDto userDto;
-    private List<CartItem> cartItems = new ArrayList<>();
+    private List<CartItemDto> cartItems = new ArrayList<>();
 }

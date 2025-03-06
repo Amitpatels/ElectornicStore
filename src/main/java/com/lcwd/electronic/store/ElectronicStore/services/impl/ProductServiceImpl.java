@@ -1,6 +1,5 @@
 package com.lcwd.electronic.store.ElectronicStore.services.impl;
 
-import com.lcwd.electronic.store.ElectronicStore.dtos.CategoryDto;
 import com.lcwd.electronic.store.ElectronicStore.dtos.ProductDto;
 import com.lcwd.electronic.store.ElectronicStore.dtos.common.PageableResponse;
 import com.lcwd.electronic.store.ElectronicStore.entities.Category;
@@ -61,7 +60,7 @@ public class ProductServiceImpl implements ProductService {
         product.setDescription(productDto.getDescription());
         product.setLive(productDto.isLive());
         product.setPrice(productDto.getPrice());
-        product.setDiscount(productDto.getDiscount());
+        product.setDiscountedPrice(productDto.getDiscountedPrice());
         product.setTitle(productDto.getTitle());
         product.setQuantity(productDto.getQuantity());
         product.setStock(productDto.isStock());

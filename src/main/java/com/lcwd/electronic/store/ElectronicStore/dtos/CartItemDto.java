@@ -9,7 +9,8 @@ import lombok.*;
 @Builder
 public class CartItemDto {
     private int cartItemId;
-    private ProductDto productDto;
+    private ProductDto product;
     private int quantity;
     private int totalPrice;
+
 }
