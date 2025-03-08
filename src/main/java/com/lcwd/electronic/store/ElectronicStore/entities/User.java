@@ -2,10 +2,9 @@ package com.lcwd.electronic.store.ElectronicStore.entities;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -29,4 +28,8 @@ public class User {
     private String about;
     @Column(name="user_profile_image_name")
     private String userProfileImageName;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Order> orders = new ArrayList<>();
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private Cart cart;
 }
