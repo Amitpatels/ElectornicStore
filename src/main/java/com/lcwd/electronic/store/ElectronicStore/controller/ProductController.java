@@ -6,6 +6,7 @@ import com.lcwd.electronic.store.ElectronicStore.dtos.common.ImageResponse;
 import com.lcwd.electronic.store.ElectronicStore.dtos.common.PageableResponse;
 import com.lcwd.electronic.store.ElectronicStore.services.FileService;
 import com.lcwd.electronic.store.ElectronicStore.services.ProductService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
+//import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 

@@ -6,12 +6,13 @@ import com.lcwd.electronic.store.ElectronicStore.dtos.OrderUpdateRequest;
 import com.lcwd.electronic.store.ElectronicStore.dtos.common.ApiResponseMessage;
 import com.lcwd.electronic.store.ElectronicStore.dtos.common.PageableResponse;
 import com.lcwd.electronic.store.ElectronicStore.services.OrderService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -27,6 +28,7 @@ public class OrderController {
             return new ResponseEntity<>(orderDto, HttpStatus.CREATED);
         }
 
+        @PreAuthorize("hasRole('ADMIN')")
         @DeleteMapping("/{userId}")
         public ResponseEntity<ApiResponseMessage> removeOrder(@PathVariable String userId){
             orderService.removeOrder(userId);
@@ -38,6 +40,7 @@ public class OrderController {
             return new ResponseEntity<>(responseMessage,HttpStatus.OK);
         }
 
+        @PreAuthorize("hasAnyRole('NORMAL','ADMIN')")
         @GetMapping("/user/{userId}")
         public ResponseEntity<List<OrderDto>> getOrdersOfUser(@PathVariable String userId){
             List<OrderDto> orderDtos = orderService.getOrdersOfUser(userId);
