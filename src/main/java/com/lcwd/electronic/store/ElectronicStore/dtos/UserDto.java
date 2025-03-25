@@ -1,10 +1,13 @@
 package com.lcwd.electronic.store.ElectronicStore.dtos;
 
+import com.lcwd.electronic.store.ElectronicStore.entities.Role;
 import com.lcwd.electronic.store.ElectronicStore.validate.ImageNameValid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+
+import java.util.List;
 
 
 @Getter
@@ -27,4 +30,5 @@ public class UserDto {
     private String about;
     @ImageNameValid
     private String userProfileImageName;
+    private List<RoleDto> roles;
 }

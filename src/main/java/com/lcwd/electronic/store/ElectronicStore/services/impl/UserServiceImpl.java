@@ -2,9 +2,11 @@ package com.lcwd.electronic.store.ElectronicStore.services.impl;
 
 import com.lcwd.electronic.store.ElectronicStore.dtos.UserDto;
 import com.lcwd.electronic.store.ElectronicStore.dtos.common.PageableResponse;
+import com.lcwd.electronic.store.ElectronicStore.entities.Role;
 import com.lcwd.electronic.store.ElectronicStore.entities.User;
 import com.lcwd.electronic.store.ElectronicStore.exceptions.ResourceNotFoundException;
 import com.lcwd.electronic.store.ElectronicStore.helper.PageableResponseUtility;
+import com.lcwd.electronic.store.ElectronicStore.repositories.RoleRepository;
 import com.lcwd.electronic.store.ElectronicStore.repositories.UserRepository;
 import com.lcwd.electronic.store.ElectronicStore.services.UserService;
 import org.modelmapper.ModelMapper;
@@ -16,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -41,7 +44,11 @@ public class UserServiceImpl implements UserService {
     @Value("${user.profile.image.path}")
     private String imageUploadPath;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Override
     public UserDto createUser(UserDto userDto) {
@@ -50,6 +57,14 @@ public class UserServiceImpl implements UserService {
         userDto.setUserId(userId);
 
         User user = dtoToEntity(userDto);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        //get the normal role
+        Role role = new Role();
+        role.setRoleId(UUID.randomUUID().toString());
+        role.setName("ROLE_NORMAL");
+        Role roleNormal = roleRepository.findByName("ROLE_NORMAL").orElse(role);
+        user.setRoles(List.of(roleNormal));
+
         User savedUser = userRepository.save(user);
 
         UserDto createdDto = entityToDto(savedUser);
