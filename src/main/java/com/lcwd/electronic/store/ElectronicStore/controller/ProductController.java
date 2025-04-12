@@ -24,6 +24,7 @@ import java.io.InputStream;
 
 @RestController
 @RequestMapping("/products")
+//@CrossOrigin(origins = "http://abc.com")
 public class ProductController {
 
     @Autowired
