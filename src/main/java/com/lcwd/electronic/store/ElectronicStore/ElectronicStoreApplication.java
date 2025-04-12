@@ -1,5 +1,6 @@
 package com.lcwd.electronic.store.ElectronicStore;
 
+import com.lcwd.electronic.store.ElectronicStore.config.AppConstants;
 import com.lcwd.electronic.store.ElectronicStore.entities.Role;
 import com.lcwd.electronic.store.ElectronicStore.entities.User;
 import com.lcwd.electronic.store.ElectronicStore.repositories.RoleRepository;
@@ -33,19 +34,19 @@ public class ElectronicStoreApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		Role roleAdmin = roleRepository.findByName("ROLE_ADMIN").orElse(null);
+		Role roleAdmin = roleRepository.findByName("ROLE_"+ AppConstants.ROLE_ADMIN).orElse(null);
 		if(roleAdmin == null){
 			Role role = new Role();
 			role.setRoleId(UUID.randomUUID().toString());
-			role.setName("ROLE_ADMIN");
+			role.setName("ROLE_"+AppConstants.ROLE_ADMIN);
 			roleRepository.save(role);
 		}
 
-		Role normalUser = roleRepository.findByName("ROLE_NORMAL").orElse(null);
+		Role normalUser = roleRepository.findByName("ROLE_"+AppConstants.ROLE_NORMAL).orElse(null);
 		if(normalUser == null){
 			Role role = new Role();
 			role.setRoleId(UUID.randomUUID().toString());
-			role.setName("ROLE_NORMAL");
+			role.setName("ROLE_"+AppConstants.ROLE_NORMAL);
 			roleRepository.save(role);
 		}
 

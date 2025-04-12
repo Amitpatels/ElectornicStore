@@ -1,5 +1,6 @@
 package com.lcwd.electronic.store.ElectronicStore.controller;
 
+import com.lcwd.electronic.store.ElectronicStore.config.AppConstants;
 import com.lcwd.electronic.store.ElectronicStore.dtos.CreateOrderRequestDto;
 import com.lcwd.electronic.store.ElectronicStore.dtos.OrderDto;
 import com.lcwd.electronic.store.ElectronicStore.dtos.OrderUpdateRequest;
@@ -28,7 +29,7 @@ public class OrderController {
             return new ResponseEntity<>(orderDto, HttpStatus.CREATED);
         }
 
-        @PreAuthorize("hasRole('ADMIN')")
+        @PreAuthorize("hasRole('"+ AppConstants.ROLE_ADMIN +"')")
         @DeleteMapping("/{userId}")
         public ResponseEntity<ApiResponseMessage> removeOrder(@PathVariable String userId){
             orderService.removeOrder(userId);
@@ -40,7 +41,7 @@ public class OrderController {
             return new ResponseEntity<>(responseMessage,HttpStatus.OK);
         }
 
-        @PreAuthorize("hasAnyRole('NORMAL','ADMIN')")
+        @PreAuthorize("hasAnyRole('"+AppConstants.ROLE_NORMAL+"','"+AppConstants.ROLE_ADMIN+"')")
         @GetMapping("/user/{userId}")
         public ResponseEntity<List<OrderDto>> getOrdersOfUser(@PathVariable String userId){
             List<OrderDto> orderDtos = orderService.getOrdersOfUser(userId);
