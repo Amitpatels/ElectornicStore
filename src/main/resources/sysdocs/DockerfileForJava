@@ -1,0 +1,16 @@
+FROM openjdk
+WORKDIR /usr/src/myapp
+COPY . /usr/src/myapp
+CMD ["java","-jar","MyappTest-0.0.1-SNAPSHOT.jar"]
+EXPOSE 9595
+
+##To build docker image
+docker build -t bootimage .
+
+##To run image:
+docker run --name bootproject -it -d bootimage
+docker ps
+docker logs bootproject
+
+docker stop bootproject
+docker run --name bootproject -it -p 9595:9595 -d bootimage

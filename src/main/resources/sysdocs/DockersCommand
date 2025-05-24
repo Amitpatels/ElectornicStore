@@ -1,0 +1,42 @@
+docker ps -a
+docker images
+docker run python
+docker run --name pythoncontainer -d 3qas3sdwewwddss
+docker ps
+docker run --name pythoncontainer -it -d python
+docker exec -it 3qas3sdwewwddss python3
+docker inspect docker-id
+
+##Mysql
+docker pull mysql
+docker run --name mysqlDb -e MYSQL_ROOT_PASSWORD=root -d mysql
+docker inspect mysqlDb
+docker exec -it mysqlDb bash
+mysql -p
+then you can fire sql commnand now:
+show databases;
+create database mydb;
+use mydb
+exit
+
+##nginx
+docker pull nginx
+docker images
+docker run --name nginxServer -d -p 8080:80 nginx
+docker ps
+then : http://localhost:8080/
+
+To stop container:
+docker stop containerId
+docker ps -a
+
+To remove stop container:
+docker rm containerId1 container2 container3
+
+To remove images:
+docker images
+docker rmi openJdk:18
+
+To restart container:
+docker restart pythonContainer1
+

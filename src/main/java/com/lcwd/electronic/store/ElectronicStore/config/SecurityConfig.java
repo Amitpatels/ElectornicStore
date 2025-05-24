@@ -32,6 +32,16 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
+    private static final String[] PUBLIC_URLS = {
+            "/v2/api-docs",
+            "/v3/api-docs/**",
+            "/swagger-resources/**",
+            "/swagger-ui/**",
+            "/webjars/**",
+            "/swagger-ui.html",
+            "/configuration/**"
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception{
 
@@ -70,9 +80,29 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,"/categories/**").permitAll()
                         .requestMatchers("/categories/**").hasRole(AppConstants.ROLE_ADMIN)
                         .requestMatchers(HttpMethod.POST,"/auth/generate-token").permitAll()
+                        .requestMatchers(PUBLIC_URLS).permitAll()
                         .requestMatchers("/auth/**").authenticated()
                         .anyRequest().permitAll()
                 );
+
+        /*
+        security.authorizeHttpRequests(request ->
+                request
+                        .requestMatchers(PUBLIC_URLS).permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/generate-token").permitAll()
+                        .requestMatchers("/auth/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/users/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/users/**").hasAnyRole(AppConstants.ROLE_ADMIN, AppConstants.ROLE_NORMAL)
+                        .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole(AppConstants.ROLE_ADMIN)
+                        .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
+                        .requestMatchers("/products/**").hasRole(AppConstants.ROLE_ADMIN)
+                        .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
+                        .requestMatchers("/categories/**").hasRole(AppConstants.ROLE_ADMIN)
+                        .requestMatchers("/**").permitAll()
+                        .anyRequest().permitAll()
+        );
+        */
 
 
         //to bypass auth to configure basic users on startups

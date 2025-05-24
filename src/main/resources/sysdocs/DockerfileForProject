@@ -1,0 +1,29 @@
+FROM openjdk:18-alpine
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
+
+
+##Creating docker image of our app
+docker build -t electronic .
+
+##To RUN PROJECT
+
+#Create network
+docker network create bootApp
+
+#mysql
+docker pull mysql
+docker run -d --name mysqldb -p 3306:3308 -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=electronic_store mysqlelectronic_store mysql
+
+#with network msql
+docker run -d --name mysqldb -p 3308:3306 --network=bootApp -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=electronic_store mysql
+
+docker run -d --name store -p 9090:9090 --network=bootApp -e MYSQL_HOST=mysqldb -e MYSQL_PORT=3306 electronic
+
+##To push docker image:
+docker tag electronic amit812/electronic:1.0
+docker push amit812/electronic:1.0
+
+##To pull image:
+docker pull amit812/electronic1.0:latest
